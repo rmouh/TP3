@@ -1,0 +1,6 @@
+---
+- name: Ensure net-tools is installed
+  apt:
+    name: net-tools
+    state: present
+

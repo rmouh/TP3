@@ -1,0 +1,22 @@
+- hosts: all
+  become: true
+  tasks:
+    - name: Include docker role
+      include_role:
+        name: docker
+
+    - name: Include network role
+      include_role:
+        name: network
+
+    - name: Include database role
+      include_role:
+        name: database
+
+    - name: Include app role
+      include_role:
+        name: app
+
+    - name: Include proxy role
+      include_role:
+        name: proxy

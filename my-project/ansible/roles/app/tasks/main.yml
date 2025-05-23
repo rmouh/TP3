@@ -1,0 +1,14 @@
+---
+# tasks file for roles/app
+- name: Run application container
+  docker_container:
+    name: my-app
+    image: rmouh/my-app:latest
+    env:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://my-database:5432/mydb
+      SPRING_DATASOURCE_USERNAME: user
+      SPRING_DATASOURCE_PASSWORD: pass
+    networks:
+      - name: my-app-network
+    state: started
+    restart_policy: always
