@@ -1,0 +1,11 @@
+---
+- hosts: all
+  gather_facts: false
+  become: false
+
+  tasks:
+    - name: Add id_rsa_ansible.pub to rania's authorized_keys
+      authorized_key:
+        user: rania
+        state: present
+        key: "{{ lookup('file', '~/.ssh/id_rsa_ansible.pub') }}"

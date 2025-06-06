@@ -1,5 +1,11 @@
 ---
 # tasks file for roles/database
+
+- name: Create Docker network my-app-network
+  community.docker.docker_network:
+    name: my-app-network
+    state: present
+
 - name: Run PostgreSQL container
   docker_container:
     name: my-database
