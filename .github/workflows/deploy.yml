@@ -1,27 +1,30 @@
-name: Deploy to Remote Server
+name: 🚀 Deploy to Takima Cloud via Ansible
 
 on:
   push:
-    branches: [main]
-  workflow_dispatch:
+    branches:
+      - main  # Déclenche le déploiement à chaque push sur la branche main
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repo
-      uses: actions/checkout@v3
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v3
 
-    - name: Deploy to remote server via SSH
-      uses: appleboy/ssh-action@v1.0.3
-      with:
-        host: ${{ secrets.REMOTE_HOST }}
-        username: ${{ secrets.REMOTE_USER }}
-        key: ${{ secrets.SSH_PRIVATE_KEY }}
-        script: |
-          cd /home/${{ secrets.REMOTE_USER }}/your-project-folder
-          git pull origin main
-          docker-compose pull
-          docker-compose down
-          docker-compose up -d --remove-orphans
+      - name: 🛠️ Install Ansible & dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ansible sshpass
+
+      - name: 🔐 Configure SSH access
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H rania-manel.mouhoubi.takima.cloud >> ~/.ssh/known_hosts
+
+      - name: 🚀 Run Ansible Playbook
+        run: |
+          ansible-playbook -i ansible/inventories/setup.yml ansible/playbook.yml
